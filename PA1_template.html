@@ -141,15 +141,8 @@ qplot(StepsPerDay_noNa, xlab='Total steps taken per day without missing values',
 
 Data$date&lt;-as.Date(Data$date)
 Data$DayType&lt;-weekdays(Data$date)
-head(Data)</code></pre>
-<pre><code>##   steps       date interval DayType
-## 1     0 2012-10-01        0  Monday
-## 2     0 2012-10-01        5  Monday
-## 3     0 2012-10-01       10  Monday
-## 4     0 2012-10-01       15  Monday
-## 5     0 2012-10-01       20  Monday
-## 6     0 2012-10-01       25  Monday</code></pre>
-<pre class="r"><code>weekdayWeekend &lt;- function(DayType) {
+
+weekdayWeekend &lt;- function(DayType) {
      if (weekdays(DayType) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;)) day &lt;- &quot;weekend&quot;
      else day &lt;- &quot;weekday&quot;
      

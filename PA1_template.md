@@ -117,20 +117,7 @@ message("The Mean Steps per Day without NA is ", StepsPerDay_Mean, " & ", "The M
 
 Data$date<-as.Date(Data$date)
 Data$DayType<-weekdays(Data$date)
-head(Data)
-```
 
-```
-##   steps       date interval DayType
-## 1     0 2012-10-01        0  Monday
-## 2     0 2012-10-01        5  Monday
-## 3     0 2012-10-01       10  Monday
-## 4     0 2012-10-01       15  Monday
-## 5     0 2012-10-01       20  Monday
-## 6     0 2012-10-01       25  Monday
-```
-
-```r
 weekdayWeekend <- function(DayType) {
      if (weekdays(DayType) %in% c("Saturday", "Sunday")) day <- "weekend"
      else day <- "weekday"
