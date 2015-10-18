@@ -1,14 +1,10 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 library(ggplot2)
 
 if(!file.exists('activity.csv')){
@@ -16,26 +12,32 @@ if(!file.exists('activity.csv')){
 }
 
 Data<-read.csv("activity.csv")
-
-
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
 
+```r
 StepsPerDay <- tapply(Data$steps, Data$date, sum, na.rm=TRUE)
 StepsPerDay_Mean <- mean(StepsPerDay)
 StepsPerDay_Median <- median(StepsPerDay)
 
 qplot(StepsPerDay, xlab='Total steps taken per day', ylab='Frequency_binwith=1000', binwidth=1000)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
 message("The Mean Steps per Day is ", StepsPerDay_Mean, " & ", "The Median Steps per Day is ", StepsPerDay_Median)
+```
 
+```
+## The Mean Steps per Day is 9354.22950819672 & The Median Steps per Day is 10395
 ```
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 #DataPrep
 
 averageStepsPer5MinsInterval <- aggregate(x=list(meanSteps=Data$steps), by=list(interval=Data$interval), FUN=mean, na.rm=TRUE)
@@ -47,7 +49,11 @@ qplot( x = interval, y = meanSteps, data = averageStepsPer5MinsInterval ) +
     xlab("5-min Intervals") +
     ylab("5-min Intervals Average # of Steps") +
     ggtitle("average daily activity pattern")
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
 #Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 mostSteps <- which.max(averageStepsPer5MinsInterval$meanSteps)
@@ -56,15 +62,25 @@ intervalMostSteps <-  gsub("([0-9]{1,2})([0-9]{2})", "\\1:\\2", averageStepsPer5
 message("The maximum number of steps per 5min Interval is ", mostSteps, ", ", "in the interval ", intervalMostSteps)
 ```
 
+```
+## The maximum number of steps per 5min Interval is 104, in the interval 8:35
+```
+
 ## Imputing missing values
 
-```{r}
 
+```r
 #Calculate and report the total number of missing values in the dataset
 
 numberOfMissingValues<- sum(is.na(Data))
 message("The  number of of missing values in the dataset is ", numberOfMissingValues)
+```
 
+```
+## The  number of of missing values in the dataset is 2304
+```
+
+```r
 #Replacing NA with median of that 5min interval
 
 medianStepsinInterval <- aggregate(steps ~ interval, data = Data, FUN = median)
@@ -82,19 +98,39 @@ StepsPerDay_Mean_noNa <- mean(StepsPerDay_noNa)
 StepsPerDay_Median_noNa <- median(StepsPerDay_noNa)
 
 qplot(StepsPerDay_noNa, xlab='Total steps taken per day without missing values', ylab='Frequency_binwith=1000', binwidth=1000)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
+```r
 message("The Mean Steps per Day without NA is ", StepsPerDay_Mean, " & ", "The Median Steps per Day without NA is ", StepsPerDay_Median)
+```
 
+```
+## The Mean Steps per Day without NA is 9354.22950819672 & The Median Steps per Day without NA is 10395
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 #Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 Data$date<-as.Date(Data$date)
 Data$DayType<-weekdays(Data$date)
 head(Data)
+```
 
+```
+##   steps       date interval DayType
+## 1     0 2012-10-01        0  Monday
+## 2     0 2012-10-01        5  Monday
+## 3     0 2012-10-01       10  Monday
+## 4     0 2012-10-01       15  Monday
+## 5     0 2012-10-01       20  Monday
+## 6     0 2012-10-01       25  Monday
+```
+
+```r
 weekdayWeekend <- function(DayType) {
      if (weekdays(DayType) %in% c("Saturday", "Sunday")) day <- "weekend"
      else day <- "weekday"
@@ -119,8 +155,9 @@ weekdayWeekend <- function(DayType) {
      ylab("Number of Steps") +
      labs(colour = "Day") +
      ggtitle("5-min Intervals Average # of Steps (Weekday, Weekend)")
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 
 
